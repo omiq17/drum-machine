@@ -1,0 +1,76 @@
+#drum-machine {
+  font-family: "Josefin Sans", serif;
+  width: 25%;
+  min-width: 300px;
+  margin: 17vh auto 0;
+  text-align: center;
+}
+#drum-machine #display {
+  color: grey;
+}
+#drum-machine #display p {
+  padding: 10px 15px;
+  background: grey;
+  color: white;
+  border-radius: 9px;
+  font-size: 18px;
+  font-weight: bold;
+}
+#drum-machine #pads {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+}
+#drum-machine #pads .drum-pad {
+  padding: 25px 15px;
+  text-decoration: none;
+  background: grey;
+  color: white;
+  border: 3px solid white;
+  border-radius: 9px;
+  font-weight: bold;
+  font-size: 21px;
+}
+#drum-machine #pads .drum-pad:hover {
+  color: black;
+}
+#drum-machine #bank {
+  margin-top: 15px;
+  position: relative;
+  width: 70px;
+  height: 35px;
+  background: grey;
+  border-radius: 9px;
+  display: inline-block;
+}
+#drum-machine #bank:before {
+  content: "OFF ON";
+  position: absolute;
+  top: 11px;
+  left: 2px;
+  font-weight: bold;
+  color: white;
+}
+#drum-machine #bank h3 {
+  position: absolute;
+  left: -50px;
+  top: -10px;
+  color: grey;
+}
+#drum-machine #bank .check {
+  display: none;
+}
+#drum-machine #bank .check:checked + .label {
+  left: 35px;
+}
+#drum-machine #bank .label {
+  cursor: pointer;
+  background: white;
+  position: absolute;
+  left: 0px;
+  top: 0px;
+  width: 47%;
+  height: 80%;
+  border: 3px solid grey;
+  border-radius: 9px;
+  transition: all 0.5s ease;
+}

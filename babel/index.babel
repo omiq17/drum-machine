@@ -1,0 +1,89 @@
+const barr = [
+  {name: "Q", title: ["Heater 1", "Chord 1"], s1: "https://s3.amazonaws.com/freecodecamp/drums/Heater-1.mp3", s2:"https://s3.amazonaws.com/freecodecamp/drums/Chord_1.mp3"},
+  {name: "W", title: ["Heater 2", "Chord 2"], s1: "https://s3.amazonaws.com/freecodecamp/drums/Heater-2.mp3", s2:"https://s3.amazonaws.com/freecodecamp/drums/Chord_2.mp3"},
+  {name: "E", title: ["Heater 3", "Chord 3"], s1: "https://s3.amazonaws.com/freecodecamp/drums/Heater-3.mp3", s2:"https://s3.amazonaws.com/freecodecamp/drums/Chord_3.mp3"},
+  {name: "A", title: ["Heater 4", "Shaker"], s1: "https://s3.amazonaws.com/freecodecamp/drums/Heater-4_1.mp3", s2:"https://s3.amazonaws.com/freecodecamp/drums/Give_us_a_light.mp3"},
+  {name: "S", title: ["Clap", "Open HH"], s1: "https://s3.amazonaws.com/freecodecamp/drums/Heater-6.mp3", s2:"https://s3.amazonaws.com/freecodecamp/drums/Dry_Ohh.mp3"},
+  {name: "D", title: ["Open HH", "Closed HH"], s1: "https://s3.amazonaws.com/freecodecamp/drums/Dsc_Oh.mp3", s2:"https://s3.amazonaws.com/freecodecamp/drums/Bld_H1.mp3"},
+  {name: "Z", title: ["Kick n' Hat", "Pucnchy Kick"], s1: "https://s3.amazonaws.com/freecodecamp/drums/Kick_n_Hat.mp3", s2:"https://s3.amazonaws.com/freecodecamp/drums/punchy_kick_1.mp3"},
+  {name: "X", title: ["Kick", "Side Stick"], s1: "https://s3.amazonaws.com/freecodecamp/drums/RP4_KICK_1.mp3", s2:"https://s3.amazonaws.com/freecodecamp/drums/side_stick_1.mp3"},
+  {name: "C", title: ["Closed HH", "Snare"], s1: "https://s3.amazonaws.com/freecodecamp/drums/Cev_H2.mp3", s2:"https://s3.amazonaws.com/freecodecamp/drums/Brk_Snr.mp3"}
+];
+
+class Display extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {display: "..."};
+  }
+  setDisplay(val) {
+    this.setState({display: this.props.switch ? barr[val].title[0] : barr[val].title[1]});
+  }
+  render() {
+    return(
+      <div id='display'>
+        <h1>Play Drum!</h1>
+        <p>{this.state.display}</p>
+      </div>
+    );  
+  }
+}
+
+class Pads extends React.Component{
+  constructor(props) {
+    super(props);
+    this.state = {switch: true}
+    this.displayRef = React.createRef();
+    this.handleClick = this.handleClick.bind(this);
+  }
+  handleClick(e) {
+    e.preventDefault();
+    // console.log(e.target.id);
+    // passing value with Refs!!!
+    this.displayRef.current.setDisplay(e.target.id);
+    e.target.children[0].play();
+    
+  }
+  toggleSwitch(){
+    this.setState({switch: this.state.switch ? false : true})
+  }
+  
+  render() {
+    let pads = barr.map((item, i) => (
+                          <a className="drum-pad" onClick={this.handleClick} accessKey={item.name.toLowerCase()} key={i} id={i} href="#">{item.name}
+                            <audio className="clip" id={item.name} type="audio/mp3" src={this.state.switch? item.s1: item.s2}></audio>
+                          </a>)
+                    );
+    return (
+      <div>
+        <Display ref={this.displayRef} switch={this.state.switch}/>
+        <div id="pads">
+          {pads}
+        </div>
+        <Bank switch={this.state.switch} onClickHandler={this.toggleSwitch.bind(this)}/>
+      </div>);
+  }
+};
+
+class Bank extends React.Component {
+  constructor(props){
+    super(props);
+  }
+  handleClick(e){
+    this.props.onClickHandler();    
+  }
+  render() {
+    return (
+      <div id="bank">
+        <h3>Bank</h3>
+        <input type="checkbox" className="check" onClick={this.handleClick.bind(this)} id="checkid_ajob"/>
+        <label className="label" htmlFor="checkid_ajob"></label>
+      </div>
+    );
+  }
+}
+
+ReactDOM.render(
+  <div id="drum-machine">
+    <Pads />
+  </div>, 
+  document.getElementById("app"));
